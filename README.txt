@@ -1,0 +1,3 @@
+Well I don't know what to write but...
+Custom cursor is made by putting a file in assets called cursor.png (It may take some time to load the cursor)
+That is it for now next update might add more to this

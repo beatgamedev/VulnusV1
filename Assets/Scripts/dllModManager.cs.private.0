@@ -1,0 +1,70 @@
+﻿//using System;
+//using System.Reflection;
+//using System.Threading;
+//using System.IO;
+
+//public class DLLModManager
+//{
+//    public static bool DebugEnabled = true;
+//    public static AppDomain domain = AppDomain.CurrentDomain;
+//    private static bool AlreadyStarted = false;
+//    public static void Start()
+//    {
+//        if (AlreadyStarted) return;
+//        domain = AppDomain.CurrentDomain;
+//#if UNITY_EDITOR || UNITY_STANDALONE_OSX || UNITY_ANDROID || UNITY_IOS
+//        string modsDir = Path.Combine(UnityEngine.Application.persistentDataPath, "mods");
+//#else
+//		string modsDir = Path.Combine(UnityEngine.Application.dataPath, "..", "mods");
+//#endif
+//        if (!Directory.Exists(modsDir))
+//        {
+//            Directory.CreateDirectory(modsDir);
+//        }
+
+//        foreach (string file in Directory.GetFiles(modsDir))
+//        {
+//            if (!File.Exists(file)) return;
+
+//            if (Path.GetExtension(file) == ".dll")
+//            {
+//                try
+//                {
+//                    Assembly mod = Assembly.LoadFile(file);
+//                    Type t = mod.GetType("Loader");
+//                    MethodInfo? m1;
+//                    MethodInfo? m2;
+
+//                    try
+//                    {
+//                        m1 = t.GetMethod("Init");
+//                    }
+//                    catch (Exception ex) { UnityEngine.Debug.LogException(ex); }
+
+//                    try
+//                    {
+//                        m2 = t.GetMethod("Init_D");
+//                    }
+//                    catch (Exception ex) { UnityEngine.Debug.LogException(ex); }
+
+//                    // This is how we make sure the function runs Init_D is for debugging but in some cases Init_D might not exist
+//                    // Same for Init so we check both of them before hand and define the function after
+//                    MethodInfo? init = DebugEnabled ? m2 : m1;
+
+//                    if (!init)
+//                    {
+//                        init = DebugEnabled ? m1 : m2;
+//                    }
+
+//                    init?.Invoke(mod, null);
+
+//                    if (!init) throw new Exception($"${mod.FullName} is missing Init/Init_D function(s)");
+//                }
+//                catch (Exception ex)
+//                {
+//                    UnityEngine.Debug.LogException(ex);
+//                }
+//            }
+//        }
+//    }
+//}
